@@ -99,7 +99,7 @@ export default function InitialScreen() {
                             style={styles.avatar} 
                             source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index+1+offset}.png` }}
                         />                        
-                        <TouchableOpacity onPress={()=>goToDetail(index+1)} style={styles.detailsButton}>
+                        <TouchableOpacity onPress={()=>goToDetail(index+1+offset)} style={styles.detailsButton}>
                             <Text style={{
                                 color: "#FFF"
                             }}>See Details</Text>
