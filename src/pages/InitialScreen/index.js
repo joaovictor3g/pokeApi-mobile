@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, TextInput, StatusBar } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -11,6 +11,7 @@ export default function InitialScreen() {
     const [pokemons, setPokemons] = useState([]);
     const [count, setCount] = useState(0);
     const [offset, setOffset] = useState(0);
+    const [nameOrId, setNameOrId] = useState('');
 
     const navigation = useNavigation();
 
@@ -62,23 +63,33 @@ export default function InitialScreen() {
     }
 
     return (
+        <>
+        <StatusBar barStyle="light-content" />
         <View style={styles.container}>
             <Text 
                 style={
                     { fontSize: 30, 
                       textAlign: "center",
                       fontWeight: "bold",
-                    }}>Pokedex
+                      color: "#FFF"
+                    }}>
+                        Pokedex
             </Text>
             <View style={styles.inputSearch}>
                 <TextInput
                     style={styles.searchArea}
                     placeholder="Search a pokemon by name or id"
+                    maxLength="25"
+                    onChangeText={text=>setNameOrId(text)}
+                    value={nameOrId}
+                    placeholderTextColor="#FFF"
                 />
                 <TouchableOpacity>
-                <Feather name="search" size={20} color="#FFF" style={{
-                    backgroundColor: "#000",
+                <Feather name="search" size={18} color="#000" style={{
+                    backgroundColor: "crimson",
                     padding: 9,
+                    borderWidth: 1,
+                    borderColor: "#000",
                     
                 }}/>
                 </TouchableOpacity>
@@ -135,5 +146,6 @@ export default function InitialScreen() {
                 </View>
             </ScrollView>
         </View>
+        </>
     )
 }

@@ -7,17 +7,18 @@ export default StyleSheet.create({
         color: "#000",
         paddingTop: Constants.statusBarHeight = 20,
         padding: 20,
+        backgroundColor: "#7159c1",
     },
 
     pokedex: {
-        alignSelf: 'stretch',
         textAlign: 'center',
         borderWidth: 1,
         borderColor: "#000",
         padding: 10,
         margin: 10,
         borderRadius: 10,
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: "#FFF",
     },
 
     avatar: {
@@ -58,7 +59,7 @@ export default StyleSheet.create({
     },
 
     inputSearch: {
-        padding: 20,
+        padding: 10,
         flexDirection: "row",
         justifyContent: "space-between",
     },
@@ -66,8 +67,8 @@ export default StyleSheet.create({
     searchArea: {
         borderWidth: 1,
         borderColor: "#000",
-        height: 40,
+        height: 40.5,
         padding: 5,
-        
+        color: "#FFF",   
     }
 });

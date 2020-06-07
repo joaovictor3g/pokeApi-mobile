@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StatusBar } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 
 import api from '../../services/api';
 
 import styles from './styles';
+import Interrogacao from '../../assets/interrogacao.png';
 
 export default function Details() {
     const navigation = useNavigation();
@@ -15,7 +16,10 @@ export default function Details() {
     const [name, setName] = useState('');
     const [pokemonImage, setPokemonImage] = useState('');
     const [types, setTypes] = useState([]);
-    const [styler, setStyler] = useState(styles.fire);
+    const [shinyFront, setShinyFront] = useState('');
+    const [shinyBack, setShinyBack] = useState(''); 
+    const [weight, setWeight] = useState(0);
+
 
     const id = route.params.id;
 
@@ -28,9 +32,11 @@ export default function Details() {
 
         setName(response.data.name);
         setPokemonImage(response.data.sprites.front_default);
-        setTypes(response.data.types)
-
+        setShinyFront(response.data.sprites.front_shiny);
+        setShinyBack(response.data.sprites.back_shiny);
+        setTypes(response.data.types);
         setPokemons(response.data);
+        setWeight(response.data.weight);
     }
 
     // Vai pra rota anterior
@@ -38,8 +44,15 @@ export default function Details() {
         navigation.goBack();
     }
 
+    // Primeira letra maiuscula
+    function capitalizeFirstLetter (string) {
+        return string.charAt(0).toUpperCase() + string.slice(1)
+    }
+
 
     return (
+        <>
+        <StatusBar barStyle="light-content"/>
         <View style={styles.container}>
             <TouchableOpacity onPress={backHome}>
                 <Feather name="arrow-left" size={30} color="#FFF" />
@@ -50,19 +63,20 @@ export default function Details() {
                     textAlign: "center",
                     fontSize: 30,
                     fontWeight: "bold",
-                    color:"#FFF",
+                    color:"#00ffff",
                     backgroundColor: "#000",
                     
                     
-                }}>{name}</Text>
+                }}>{capitalizeFirstLetter(name)}</Text>
 
                 <View style={{ alignItems: "center" }}>
-                    <Image source={{ uri: pokemonImage }} alt="poke" style={styles.avatar}/>
+                    <Image source={ pokemonImage ? { uri: pokemonImage }:Interrogacao} alt="poke" style={styles.avatar}/>
                 </View>
                 <View style={{
                     flexDirection: "row",
                     textAlign: "center",
-                    justifyContent: "center"
+                    justifyContent: "center",
+                    borderRadius: 5,
                 }}>
                     {types.map((type, index) => (
                         <Text 
@@ -213,10 +227,56 @@ export default function Details() {
                                     fontSize: 20,
                                     
                                 }: null}
-                        >{type.type.name}</Text>
+                        >{capitalizeFirstLetter(type.type.name)}</Text>
                     ))}
                 </View>
+
+                <View style={{
+                    marginTop: 10
+                }}>
+                    <Text style={{
+                        textAlign: "center",
+                        fontSize: 30,
+                        fontWeight: "bold",
+                        color:"#FFF",
+                        backgroundColor: "#000",
+                    }}>Shiny version</Text>
+                </View>
+
+                <View style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}>
+                    <Image source={shinyFront?{ uri: shinyFront }: Interrogacao} alt="Shiny front" style={styles.avatar}/>
+                    <Image source={shinyBack? { uri: shinyBack  }: Interrogacao} alt="Shiny back" style={styles.avatar} />
+                </View>
+
+                <View style={{
+                    marginTop: 10,
+                }}>
+                    <Text style={{
+                        textAlign: "center",
+                        fontSize: 30,
+                        fontWeight: "bold",
+                        color:"#FFF",
+                        backgroundColor: "#000",
+                    }}>Informations</Text>
+
+                    <Text style={{
+                        padding: 10,
+                        fontSize: 20,
+                        fontWeight: "bold",
+                    }}>Pokedex number: {id}</Text>
+                    <Text style={{
+                        padding: 10,
+                        fontSize: 20,
+                        fontWeight: "bold",
+                    }}>Weight: {weight/10} kg</Text>
+                </View>
             </View>
+        
         </View>
+        </>
     )
 }
